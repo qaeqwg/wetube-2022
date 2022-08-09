@@ -123,7 +123,7 @@ export const finishGithubLogin = async (req, res) => {
         }
         let user = await User.findOne({ email: emailObj.email });
         if (!user) {
-            await User.create({
+            user = await User.create({
                 avatarUrl: userData.avatar_url,
                 name: userData.login,
                 email: emailObj.email,
