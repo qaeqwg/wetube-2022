@@ -9,11 +9,17 @@ const s3 = new aws.S3({
     },
 });
 
-const multerUploader = multerS3({
+const s3ImageUploader = multerS3({
     s3: s3,
     bucket: 'wetube2022kth',
     acl: "public-read",
 });
+
+const s3VideoUploader = multerS3({
+    s3: s3,
+    bucket: "wetube2022kth",
+    acl: "public-read",
+})
 
 export const localsMiddleware = (req, res, next) => {
     res.locals.loggedIn = Boolean(req.session.loggedIn);
@@ -42,13 +48,10 @@ export const publicOnlyMiddleware = (req, res, next) => {
 
 export const avatarUpload = multer({
     dest: "uploads/avatars/",
-    limits: {
-        fieldSize: 300000,
-    },
-    storage: multerUploader,
+    storage: s3ImageUploader,
 });
 
 export const videoUpload = multer({
     dest: "uploads/videos/",
-    storage: multerUploader,
+    storage: s3VideoUploader,
 });
